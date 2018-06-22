@@ -19,10 +19,13 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
-        <group id="KotlinConverter.SampleMenu" text="Convert to Kotlin!" description="Custom kotlin converter">
-            <add-to-group group-id="CodeMenu" anchor="last"/>
-            <action id="KotlinConverter.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
-        </group>
+        <action id="TransformToKotlinAction" class="RenameAndConvertJavaToKotlinAction"
+                text="Convert Java File to Kotlin File + Git">
+            <add-to-group group-id="CodeMenu"
+                          relative-to-action="ConvertJavaToKotlinGroup"
+                          anchor="after"/>
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="shift ctrl alt J"/>
+        </action>
     </actions>
 </idea-plugin>
