@@ -18,14 +18,17 @@
         <!-- Add your extensions here -->
     </extensions>
 
+    <!--
+    Custom action is added after 'ConvertJavaToKotlinGroup' native action.
+    -->
     <actions>
-        <action id="TransformToKotlinAction" class="RenameAndConvertJavaToKotlinAction"
+        <action id="TransformToKotlinAction" class="fr.dco.RenameAndConvertJavaToKotlinAction"
                 text="Convert Java File to Kotlin File + Git">
             <add-to-group group-id="CodeMenu"
                           relative-to-action="ConvertJavaToKotlinGroup"
                           anchor="after"/>
             <keyboard-shortcut keymap="$default"
-                               first-keystroke="shift ctrl alt J"/>
+                               first-keystroke="shift ctrl alt K"/>
         </action>
     </actions>
 </idea-plugin>

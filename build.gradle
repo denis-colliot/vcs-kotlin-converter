@@ -11,11 +11,11 @@ buildscript {
 }
 
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.3.2'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.50'
+    id 'org.jetbrains.intellij' version '0.3.4'
 }
 
-group 'fr.ratp'
+group 'fr.dco'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -32,12 +32,13 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
 intellij {
     version '2018.1.4'
 }
+
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
