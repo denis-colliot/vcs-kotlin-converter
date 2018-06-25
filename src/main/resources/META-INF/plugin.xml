@@ -24,7 +24,7 @@
     <actions>
         <action id="RenameAndConvertJavaToKotlinAction"
                 class="fr.dco.kotlin.RenameAndConvertJavaToKotlinAction"
-                text="Convert Java File to Kotlin File + Git">
+                text="Convert Java File to Kotlin File in VCS">
 
             <add-to-group group-id="CodeMenu"
                           relative-to-action="ConvertJavaToKotlinGroup"

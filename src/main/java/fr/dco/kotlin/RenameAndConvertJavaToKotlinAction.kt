@@ -26,7 +26,8 @@ import java.util.*
  * 0. Renaming `.java` file with Kotlin `.kt` extension
  * 0. Committing rename result to VCS
  * 0. Rollbacking rename action to `.java` extension
- * 0. Invoking `ConvertJavaToKotlin` action on the file
+ *
+ * Once renaming operations are done, the plugin invokes `ConvertJavaToKotlin` native action on the selected files.
  *
  * @see <a href="https://github.com/JetBrains/kotlin/blob/master/idea/src/org/jetbrains/kotlin/idea/actions/JavaToKotlinAction.kt">
  *     Link to 'ConvertJavaToKotlin' official source code</a>
@@ -60,7 +61,7 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         /**
          * Commit message for the file renaming step.
          */
-        private const val COMMIT_MSG = "WIP: Renommage du fichier '%s' avec l'extension Kotlin"
+        private const val COMMIT_MSG = "WIP: Renaming file '%s' with Kotlin extension"
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -87,10 +88,10 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
 
                     // Renaming 'Kotlin file' back to Java extension.
                     renameFile(project, it, it.nameWithoutExtension + JAVA_EXTENSION)
-
-                    // Invoking native 'Convert Java to Kotlin File' action.
-                    ActionManager.getInstance().getAction(CONVERT_JAVA_TO_KOTLIN_PLUGIN_ID)?.actionPerformed(e)
                 }
+
+        // Invoking native 'Convert Java to Kotlin File' action.
+        ActionManager.getInstance().getAction(CONVERT_JAVA_TO_KOTLIN_PLUGIN_ID)?.actionPerformed(e)
     }
 
     override fun update(e: AnActionEvent) {

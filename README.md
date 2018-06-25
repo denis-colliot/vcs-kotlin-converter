@@ -3,17 +3,20 @@
 This IntelliJ IDEA plugin runs the native *Convert Java File To Kotlin File* action and preserves files VCS 
 history by committing the rename step in VCS.
 
-Indeed, the native action renames the files to convert which may result in loosing the entire file VCS history 
-(e.g. git history).
+Indeed, the native action renames and transforms content of the files to convert which may result in loosing the 
+entire file VCS history (e.g. git history).  
+This plugin helps solving this annoying issue.
 
 
 # How does it work?
 
 For each selected Java file, the following steps are applied:
 - Rename Java file with Kotlin extension
-- Commit previous renaming step to VCS with standard commit message 
+- Commit renaming step to VCS with standard commit message 
 - Rename file back to Java extension
-- Run native *Convert Java File To Kotlin File* action
+
+Once all renaming operations are done, the plugin invokes the native *Convert Java File To Kotlin File* action on the 
+selected files.
 
 
 # Plugin manual tests
