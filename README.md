@@ -10,7 +10,11 @@ This plugin helps solving this annoying issue.
 
 # How does it work?
 
-For each selected Java file, the following steps are applied:
+This plugin adds a new *Convert Java File To Kotlin File in VCS* menu action right after *Convert Java File To Kotlin File* 
+native menu.  
+The new menu overrides the default native menu keymap `Ctrl Alt Shift K`, but may be configured in IDE settings.
+
+When running this new action, the following steps are applied to each selected Java file:
 - Rename Java file with Kotlin extension
 - Commit renaming step to VCS with standard commit message 
 - Rename file back to Java extension
