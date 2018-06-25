@@ -1,4 +1,4 @@
-package fr.dco
+package fr.dco.kotlin
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
@@ -56,6 +56,11 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
          * Kotlin file extension (with separator).
          */
         private const val KOTLIN_EXTENSION = ".kt"
+
+        /**
+         * Commit message for the file renaming step.
+         */
+        private const val COMMIT_MSG = "WIP: Renommage du fichier '%s' avec l'extension Kotlin"
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -124,7 +129,7 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         val vcs = VcsUtil.getVcsFor(project, virtualFile)
 
         vcs?.checkinEnvironment?.commit(listOf(Change(before, after)),
-                "Renommage du fichier '${virtualFile.name}' avec l'extension Kotlin")
+                COMMIT_MSG.format(virtualFile.nameWithoutExtension))
     }
 
     private fun contentRevision(virtualFile: VirtualFile): CurrentContentRevision {

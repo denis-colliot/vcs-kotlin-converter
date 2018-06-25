@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>fr.ratp.kotlin-converter</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>fr.dco.kotlin.kotlin-converter</id>
+    <name>VCS Kotlin Converter</name>
+    <vendor url="https://denis-colliot.github.io/">Denis Colliot</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    This IntelliJ IDEA plugin runs the native <em>Convert Java File To Kotlin File</em> action and preserves files
+    VCS history by committing the rename step in VCS.
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -22,11 +22,14 @@
     Custom action is added after 'ConvertJavaToKotlinGroup' native action.
     -->
     <actions>
-        <action id="TransformToKotlinAction" class="fr.dco.RenameAndConvertJavaToKotlinAction"
+        <action id="RenameAndConvertJavaToKotlinAction"
+                class="fr.dco.kotlin.RenameAndConvertJavaToKotlinAction"
                 text="Convert Java File to Kotlin File + Git">
+
             <add-to-group group-id="CodeMenu"
                           relative-to-action="ConvertJavaToKotlinGroup"
                           anchor="after"/>
+
             <keyboard-shortcut keymap="$default"
                                first-keystroke="shift ctrl alt K"/>
         </action>
