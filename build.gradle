@@ -15,8 +15,8 @@ plugins {
     id 'org.jetbrains.intellij' version '0.3.4'
 }
 
-group 'fr.dco'
-version '1.0'
+group 'fr.dco.kotlin'
+version '0.1'
 
 sourceCompatibility = 1.8
 
