@@ -45,3 +45,8 @@ repositories {
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
+
+publishPlugin {
+    username project.properties['jetbrains.publish.username']
+    password project.properties['jetbrains.publish.password']
+}

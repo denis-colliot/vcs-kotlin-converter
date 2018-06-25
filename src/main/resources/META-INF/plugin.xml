@@ -2,6 +2,7 @@
     <id>fr.dco.kotlin.vcs-kotlin-converter</id>
     <name>VCS Kotlin Converter</name>
     <vendor url="https://denis-colliot.github.io">Denis Colliot</vendor>
+    <idea-version since-build="171"/>
 
     <description><![CDATA[
     This IntelliJ IDEA plugin runs the native <em>Convert Java File To Kotlin File</em> action and preserves files
