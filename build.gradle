@@ -18,6 +18,19 @@ plugins {
 group 'fr.dco.kotlin'
 version '0.1'
 
+patchPluginXml {
+    changeNotes """
+    <ul>
+      <li>0.1: Initial version of the VCS Kotlin Converter plugin for IntelliJ IDEA.</li>
+    </ul>
+    """
+}
+
+intellij {
+    version '2017.1'
+    updateSinceUntilBuild false
+}
+
 repositories {
     mavenLocal()
     maven {
@@ -31,15 +44,4 @@ repositories {
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
-}
-
-intellij {
-    version '2018.1.5'
-}
-
-patchPluginXml {
-    changeNotes """
-      <h1>1.0</h1>
-      Initial version of the 
-      """
 }

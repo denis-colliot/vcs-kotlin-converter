@@ -1,7 +1,7 @@
 <idea-plugin>
-    <id>fr.dco.kotlin.kotlin-converter</id>
+    <id>fr.dco.kotlin.vcs-kotlin-converter</id>
     <name>VCS Kotlin Converter</name>
-    <vendor url="https://denis-colliot.github.io/">Denis Colliot</vendor>
+    <vendor url="https://denis-colliot.github.io">Denis Colliot</vendor>
 
     <description><![CDATA[
     This IntelliJ IDEA plugin runs the native <em>Convert Java File To Kotlin File</em> action and preserves files
@@ -10,9 +10,8 @@
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
-    <!-- uncomment to enable plugin in all products
+    <!-- enable plugin in all products -->
     <depends>com.intellij.modules.lang</depends>
-    -->
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -27,7 +26,7 @@
                 text="Convert Java File to Kotlin File in VCS">
 
             <add-to-group group-id="CodeMenu"
-                          relative-to-action="ConvertJavaToKotlinGroup"
+                          relative-to-action="ConvertJavaToKotlin"
                           anchor="after"/>
 
             <keyboard-shortcut keymap="$default"
