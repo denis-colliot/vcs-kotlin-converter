@@ -1,12 +1,6 @@
 buildscript {
     repositories {
-        maven {
-            url uliceArtifactoryUrl
-            credentials {
-                username uliceArtifactoryUsername
-                password uliceArtifactoryPassword
-            }
-        }
+        mavenCentral()
     }
 }
 
@@ -33,13 +27,7 @@ intellij {
 
 repositories {
     mavenLocal()
-    maven {
-        url uliceArtifactoryUrl
-        credentials {
-            username uliceArtifactoryUsername
-            password uliceArtifactoryPassword
-        }
-    }
+    mavenCentral()
 }
 
 dependencies {
