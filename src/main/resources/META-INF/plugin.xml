@@ -6,7 +6,7 @@
 
     <description><![CDATA[
     This IntelliJ IDEA plugin runs the native <em>Convert Java File To Kotlin File</em> action and preserves files
-    VCS history by committing the rename step in VCS.
+    VCS history by committing the rename step in VCS (most likely git).
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html

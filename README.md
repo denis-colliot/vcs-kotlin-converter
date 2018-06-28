@@ -15,7 +15,7 @@ and can be installed following these simple steps:
 
 1. Open __Settings__ menu (`Ctrl Alt S`). 
 2. Access __Plugins__ section.
-3. Click on __Install JetBrains plugin...__ button.
+3. Click __Brows repositories...__ button.
 4. Search for __VCS Kotlin Converter__ and click __Install__ button.
 
 
