@@ -49,8 +49,8 @@ When running gradle command `runIde`, IntelliJ IDEA downloads (and launches) an 
 
 If you are behind a company proxy, it may be necessary to configure proxy in the following files:
 ```sh
-<idea_intsallation_path>/bin/idea.vmoptions
-<idea_intsallation_path>/bin/idea64.vmoptions
+<idea_installation_path>/bin/idea.vmoptions
+<idea_installation_path>/bin/idea64.vmoptions
 ```
 By adding and configuring the following lines:
 ```
