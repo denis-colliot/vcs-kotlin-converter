@@ -80,14 +80,23 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
                     // Storing initial Java file content revision (before first rename step).
                     val before = contentRevision(it)
 
-                    // Renaming Java file with Kotlin extension.
-                    renameFile(project, it, it.nameWithoutExtension + KOTLIN_EXTENSION)
+                    val vcs = VcsUtil.getVcsFor(project, it)
 
-                    // Committing renaming action into VCS.
-                    commit(project, it, before)
+                    if (vcs != null && vcs.fileExistsInVcs(before.file)) {
+                        // Renaming Java file with Kotlin extension.
+                        renameFile(project, it, it.nameWithoutExtension + KOTLIN_EXTENSION)
 
-                    // Renaming 'Kotlin file' back to Java extension.
-                    renameFile(project, it, it.nameWithoutExtension + JAVA_EXTENSION)
+                        // Committing renaming action into VCS.
+                        commit(project, it, before)
+
+                        // Renaming 'Kotlin file' back to Java extension.
+                        renameFile(project, it, it.nameWithoutExtension + JAVA_EXTENSION)
+                    }
+                    else {
+                        logger.info("File '$it' is not under VCS, aborting commit")
+                    }
+
+
                 }
 
         // Invoking native 'Convert Java to Kotlin File' action.
@@ -120,11 +129,6 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
     }
 
     private fun commit(project: Project, virtualFile: VirtualFile, before: ContentRevision) {
-
-        if (!VcsUtil.isFileUnderVcs(project, virtualFile.path)) {
-            logger.info("File '$virtualFile' is not under VCS, aborting commit")
-            return
-        }
 
         val after = contentRevision(virtualFile)
         val vcs = VcsUtil.getVcsFor(project, virtualFile)
@@ -172,3 +176,4 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         return result
     }
 }
+
