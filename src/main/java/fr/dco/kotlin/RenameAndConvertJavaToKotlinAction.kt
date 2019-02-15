@@ -64,13 +64,10 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         private const val COMMIT_MSG = "WIP: Renaming file '%s' with Kotlin extension"
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    //
-    // PLUGIN IMPLEMENTATION.
-    //
-    // -----------------------------------------------------------------------------------------------------------------
+    // region Plugin implementation
 
     override fun actionPerformed(e: AnActionEvent) {
+
         val project = e.project ?: return
 
         selectedJavaFiles(e)
@@ -82,7 +79,7 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
 
                     val vcs = VcsUtil.getVcsFor(project, it)
 
-                    if (vcs != null && vcs.fileExistsInVcs(before.file)) {
+                    if (vcs?.fileExistsInVcs(before.file) == true) {
                         // Renaming Java file with Kotlin extension.
                         renameFile(project, it, it.nameWithoutExtension + KOTLIN_EXTENSION)
 
@@ -91,12 +88,9 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
 
                         // Renaming 'Kotlin file' back to Java extension.
                         renameFile(project, it, it.nameWithoutExtension + JAVA_EXTENSION)
+                    } else {
+                        logger.info("File `$it` is not under VCS, aborting commit")
                     }
-                    else {
-                        logger.info("File '$it' is not under VCS, aborting commit")
-                    }
-
-
                 }
 
         // Invoking native 'Convert Java to Kotlin File' action.
@@ -109,21 +103,19 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         e.presentation.isEnabled = isAnyJavaFileSelected(project, virtualFiles)
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    //
-    // UTILITY FUNCTIONS.
-    //
-    // -----------------------------------------------------------------------------------------------------------------
+    // endregion
+
+    // region Utility function
 
     private fun renameFile(project: Project, virtualFile: VirtualFile, newName: String) {
 
-        logger.info("Renaming file '${virtualFile.name}' to '$newName'")
+        logger.info("Renaming file `${virtualFile.name}` to `$newName`")
 
         WriteCommandAction.runWriteCommandAction(project) {
             try {
                 virtualFile.rename(this, newName)
             } catch (e: IOException) {
-                throw RuntimeException("Error while renaming file '${virtualFile.name}' to '$newName'", e)
+                throw RuntimeException("Error while renaming file `${virtualFile.name}` to `$newName`", e)
             }
         }
     }
@@ -175,5 +167,6 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         }
         return result
     }
-}
 
+    // endregion
+}
