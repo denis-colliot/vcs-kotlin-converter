@@ -37,6 +37,5 @@ dependencies {
 }
 
 publishPlugin {
-    username project.properties['jetbrains.publish.username']
-    password project.properties['jetbrains.publish.password']
+    token project.properties['jetbrains.publish.token']
 }

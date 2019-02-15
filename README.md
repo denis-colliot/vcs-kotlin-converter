@@ -12,7 +12,7 @@ This plugin helps solving this annoying issue.
 
 The plugin is published under the *JetBrains Plugins Repository* (see [here](https://plugins.jetbrains.com/plugin/10862-vcs-kotlin-converter)) 
 and can be installed following these simple steps:
-
+git un
 1. Open __Settings__ menu (`Ctrl Alt S`). 
 2. Access __Plugins__ section.
 3. Click __Brows repositories...__ button.
@@ -67,9 +67,12 @@ The plugin can be automatically published to *JetBrains Plugins Repository* usin
 ./gradlew publishPlugin
 ```
 
-This command requires following properties (they may be defined in local `gradle.properties` __but should never be 
-indexed in `git`__):
+This command relies on publish plugin configuration declared in `build.gradle` :
 ```
-jetbrains.publish.username=<jetbrains_username>
-jetbrains.publish.password=<jetbrains_password>
+publishPlugin {
+    token project.properties['jetbrains.publish.token']
+}
 ```
+
+The publish token should be defined in **local** `gradle.properties` under key `jetbrains.publish.token` **but 
+should never be indexed in git**!
