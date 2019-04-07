@@ -1,16 +1,11 @@
 package fr.dco.kotlin
 
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vcs.actions.VcsContextFactory
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vcs.changes.Change
-import com.intellij.openapi.vcs.changes.ContentRevision
-import com.intellij.openapi.vcs.changes.CurrentContentRevision
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileVisitor
@@ -25,7 +20,7 @@ import java.util.*
  *
  * 0. Renaming `.java` file with Kotlin `.kt` extension
  * 0. Committing rename result to VCS
- * 0. Rollbacking rename action to `.java` extension
+ * 0. Rollback rename action to `.java` extension
  *
  * Once renaming operations are done, the plugin invokes `ConvertJavaToKotlin` native action on the selected files.
  *
@@ -51,17 +46,23 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         /**
          * Java file extension (with separator).
          */
-        private const val JAVA_EXTENSION = ".java"
+        private const val JAVA_EXTENSION = "java"
 
         /**
          * Kotlin file extension (with separator).
          */
-        private const val KOTLIN_EXTENSION = ".kt"
+        private const val KOTLIN_EXTENSION = "kt"
 
         /**
          * Commit message for the file renaming step.
          */
         private const val COMMIT_MSG = "WIP: Renaming file '%s' with Kotlin extension"
+
+        /**
+         * Storage of the last commit message, in case the user changes it
+         */
+        private var lastCommitMessage = COMMIT_MSG
+
     }
 
     // region Plugin implementation
@@ -70,31 +71,24 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
 
         val project = e.project ?: return
 
-        selectedJavaFiles(e)
+        val selectedJava = selectedJavaFiles(e)
                 .filter { it.isWritable }
                 .map { it.virtualFile }
-                .forEach {
-                    // Storing initial Java file content revision (before first rename step).
-                    val before = contentRevision(it)
+                .toList()
+                .toTypedArray()
 
-                    val vcs = VcsUtil.getVcsFor(project, it)
+        writeCommitHistory(project, project.baseDir, selectedJava)
 
-                    if (vcs?.fileExistsInVcs(before.file) == true) {
-                        // Renaming Java file with Kotlin extension.
-                        renameFile(project, it, it.nameWithoutExtension + KOTLIN_EXTENSION)
-
-                        // Committing renaming action into VCS.
-                        commit(project, it, before)
-
-                        // Renaming 'Kotlin file' back to Java extension.
-                        renameFile(project, it, it.nameWithoutExtension + JAVA_EXTENSION)
-                    } else {
-                        logger.info("File `$it` is not under VCS, aborting commit")
-                    }
-                }
+        val dataContext = DataContext { data ->
+            when (data) {
+                PlatformDataKeys.VIRTUAL_FILE_ARRAY.name -> selectedJava
+                else -> e.dataContext.getData(data)
+            }
+        }
+        val overrideEvent = AnActionEvent(e.inputEvent, dataContext, e.place, e.presentation, e.actionManager, e.modifiers)
 
         // Invoking native 'Convert Java to Kotlin File' action.
-        ActionManager.getInstance().getAction(CONVERT_JAVA_TO_KOTLIN_PLUGIN_ID)?.actionPerformed(e)
+        ActionManager.getInstance().getAction(CONVERT_JAVA_TO_KOTLIN_PLUGIN_ID)?.actionPerformed(overrideEvent)
     }
 
     override fun update(e: AnActionEvent) {
@@ -120,19 +114,35 @@ class RenameAndConvertJavaToKotlinAction : AnAction() {
         }
     }
 
-    private fun commit(project: Project, virtualFile: VirtualFile, before: ContentRevision) {
+    private fun writeCommitHistory(project: Project, projectBase: VirtualFile, files: Array<VirtualFile>): Boolean {
+        val commitMessage = Messages.showInputDialog(project, "Commit Message for Conversion:", "Enter a commit message", null, lastCommitMessage, null)
+        if (commitMessage.isNullOrBlank()) return false
 
-        val after = contentRevision(virtualFile)
-        val vcs = VcsUtil.getVcsFor(project, virtualFile)
+        lastCommitMessage = commitMessage!!
 
-        vcs?.checkinEnvironment?.commit(listOf(Change(before, after)),
-                COMMIT_MSG.format(virtualFile.nameWithoutExtension))
-    }
-
-    private fun contentRevision(virtualFile: VirtualFile): CurrentContentRevision {
-        val contextFactory = VcsContextFactory.SERVICE.getInstance()
-        val path = contextFactory.createFilePathOn(virtualFile)
-        return CurrentContentRevision(path)
+        val finalVcs = VcsUtil.getVcsFor(project, projectBase) ?: return false
+        val changes = files.mapNotNull {
+            logger.info("File $it has extension: ${it.extension}")
+            if (it.extension != JAVA_EXTENSION) return@mapNotNull null
+            val before = it.contentRevision()
+            logger.info("Found file ${before.file}")
+            renameFile(project, it, "${it.nameWithoutExtension}.$KOTLIN_EXTENSION")
+            val after = it.contentRevision()
+            logger.info("Renamed file ${before.file} -> ${after.file}")
+            Change(before, after)
+        }.toList()
+        if (changes.isNotEmpty()) {
+            finalVcs.checkinEnvironment?.commit(changes, commitMessage)
+        } else {
+            Messages.showDialog("No files found to commit.", "Nothing to commit", emptyArray(), 0, null)
+            logger.info("Cannot commit an empty set of files.")
+            return false
+        }
+        files.forEach {
+            if (it.extension != KOTLIN_EXTENSION) return@forEach
+            renameFile(project, it, "${it.nameWithoutExtension}.$JAVA_EXTENSION")
+        }
+        return true
     }
 
     private fun isAnyJavaFileSelected(project: Project, files: Array<VirtualFile>): Boolean {
