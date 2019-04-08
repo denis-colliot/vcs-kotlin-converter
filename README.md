@@ -12,11 +12,11 @@ This plugin helps solving this annoying issue.
 
 The plugin is published under the *JetBrains Plugins Repository* (see [here](https://plugins.jetbrains.com/plugin/10862-vcs-kotlin-converter)) 
 and can be installed following these simple steps:
-git un
-1. Open __Settings__ menu (`Ctrl Alt S`). 
-2. Access __Plugins__ section.
-3. Click __Brows repositories...__ button.
-4. Search for __VCS Kotlin Converter__ and click __Install__ button.
+
+ 0. Open __Settings__ menu (`Ctrl Alt S`).
+ 0. Access __Plugins__ section.
+ 0. Click __Brows repositories...__ button.
+ 0. Search for __VCS Kotlin Converter__ and click __Install__ button.
 
 
 # How does it work?
@@ -26,9 +26,10 @@ native menu (under *Code* menu).
 The new menu overrides the default native menu keymap `Ctrl Alt Shift K`, but may be configured in IDE settings.
 
 When running this new action menu, the following steps are applied to each selected Java file:
-- Rename Java file with Kotlin extension
-- Commit renaming step to VCS with standard commit message 
-- Rename file back to Java extension
+
+ - Rename Java file with Kotlin extension
+ - Commit renaming step to VCS with standard commit message 
+ - Rename file back to Java extension
 
 Once all renaming operations are done, the plugin invokes the native *Convert Java File To Kotlin File* action on the 
 selected Java files.
@@ -48,11 +49,14 @@ Run the following gradle command:
 When running gradle command `runIde`, IntelliJ IDEA downloads (and launches) an IDEA version from `dl.bintray.com`.
 
 If you are behind a company proxy, it may be necessary to configure proxy in the following files:
+
 ```sh
 <idea_installation_path>/bin/idea.vmoptions
 <idea_installation_path>/bin/idea64.vmoptions
 ```
+
 By adding and configuring the following lines:
+
 ```
 -Dhttps.proxyHost=<proxy_host>
 -Dhttps.proxyPort=<proxy_port>
@@ -63,11 +67,13 @@ By adding and configuring the following lines:
 ## Publish plugin
 
 The plugin can be automatically published to *JetBrains Plugins Repository* using the following gradle command:
+
 ```
 ./gradlew publishPlugin
 ```
 
 This command relies on publish plugin configuration declared in `build.gradle` :
+
 ```
 publishPlugin {
     token project.properties['jetbrains.publish.token']
