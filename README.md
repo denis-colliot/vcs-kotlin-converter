@@ -7,16 +7,22 @@ Indeed, the native action renames and transforms content of the files to convert
 entire file VCS history (e.g. git history).  
 This plugin helps solving this annoying issue.
 
+## Builtin git support
+
+If you use IntelliJ IDEA builtin git support, recent versions of the IDE now provide this feature natively in the 
+commit dialog (see [here](https://medvector.github.io/kotlin/converting-to-Kotlin/)).
+
+Unfortunately, this native feature is not present in Android Studio. 
 
 # How to install?
 
 The plugin is published under the *JetBrains Plugins Repository* (see [here](https://plugins.jetbrains.com/plugin/10862-vcs-kotlin-converter)) 
 and can be installed following these simple steps:
 
- 0. Open __Settings__ menu (`Ctrl Alt S`).
- 0. Access __Plugins__ section.
- 0. Click __Brows repositories...__ button.
- 0. Search for __VCS Kotlin Converter__ and click __Install__ button.
+ 1. Open __Settings__ menu (`Ctrl Alt S`).
+ 2. Access __Plugins__ section.
+ 3. Click __Brows repositories...__ button.
+ 4. Search for __VCS Kotlin Converter__ and click __Install__ button.
 
 
 # How does it work?
