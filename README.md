@@ -1,3 +1,14 @@
+> # :warning: Deprecated plugin no longer maintained :warning:
+> 
+> Latest versions of **IntelliJ IDEA** & **Android Studio** now provide this feature natively through the commit dialog of their builtin git support.
+> 
+> See related post blog: https://medvector.github.io/kotlin/converting-to-Kotlin/
+> 
+> For this reason, this plugin comes to its end and is no longer maintained.
+> 
+> Long live Kotlin!
+
+
 # Introduction
 
 The __VCS Kotlin Converter__ IntelliJ IDEA plugin runs the native *Convert Java File To Kotlin File* action and preserves files VCS 
@@ -7,12 +18,6 @@ Indeed, the native action renames and transforms content of the files to convert
 entire file VCS history (e.g. git history).  
 This plugin helps solving this annoying issue.
 
-## Builtin git support
-
-If you use IntelliJ IDEA builtin git support, recent versions of the IDE now provide this feature natively in the 
-commit dialog (see [here](https://medvector.github.io/kotlin/converting-to-Kotlin/)).
-
-Unfortunately, this native feature is not present in Android Studio. 
 
 # How to install?
 
